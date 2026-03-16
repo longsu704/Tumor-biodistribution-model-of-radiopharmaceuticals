@@ -15,7 +15,7 @@ except ImportError:
 warnings.filterwarnings('ignore')
 
 # 1. 加载数据
-train_file_path = r'D:\wordjihe\Biodistribution_data_radiopharmaceuticals.xlsx'  # 请修改为你的路径
+train_file_path = 'wordjihe\Biodistribution_data_radiopharmaceuticals.xlsx'  # 请修改为你的路径
 df_train = pd.read_excel(train_file_path, na_values=['NA', 'na', 'N/A', 'n/a', ''])
 
 X_train_origin = df_train.iloc[:, 0:13].copy()
