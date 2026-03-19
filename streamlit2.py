@@ -8,7 +8,7 @@ from datetime import datetime
 st.set_page_config(
     page_title="Radiopharmaceutical Prediction Platform",
     layout="wide",
-    initial_sidebar_state="collapsed",  # 收起侧边栏，更简洁
+    initial_sidebar_state="collapsed",
     page_icon="📊"
 )
 
@@ -130,7 +130,7 @@ st.markdown("""
 # ====================== 初始化Session State ======================
 # 初始化选中的模型
 if 'selected_model' not in st.session_state:
-    st.session_state.selected_model = "pred_model_xgboost_feat-basic"
+    st.session_state.selected_model = "pred_model_XGBoost_feat-basic"
 
 # 初始化历史记录（最多保存10条）
 if 'prediction_history' not in st.session_state:
@@ -167,13 +167,13 @@ st.markdown("""
 *A machine learning web page based on radiopharmaceutical properties to predict tumor biodistribution in mice*  
 """)
 
-# 模型选择区域（核心修改：并列卡片）
+# 模型选择区域
 st.subheader("1. Model Selection")
 col_model1, col_model2 = st.columns(2, gap="large")
 
 # 模型1卡片
 with col_model1:
-    is_selected1 = st.session_state.selected_model == "pred_model_xgboost_feat-basic"
+    is_selected1 = st.session_state.selected_model == "pred_model_XGBoost_feat-basic"
     card_class = "model-card selected" if is_selected1 else "model-card"
     st.markdown(f"""
     <div class="{card_class}">
@@ -181,13 +181,13 @@ with col_model1:
         <p style='color:#6c757d;'>Basic feature set with XGBoost regression</p>
     </div>
     """, unsafe_allow_html=True)
-    # 按钮辅助选择（兼容移动端）
+    # 按钮辅助选择
     if st.button("Select This Model", key="btn1"):
-        select_model("pred_model_xgboost_feat-basic")
+        select_model("pred_model_XGBoost_feat-basic")
 
 # 模型2卡片
 with col_model2:
-    is_selected2 = st.session_state.selected_model == "pred_model_catboost_feat-chelator"
+    is_selected2 = st.session_state.selected_model == "pred_model_CatBoost_feat-chelator"
     card_class = "model-card selected" if is_selected2 else "model-card"
     st.markdown(f"""
     <div class="{card_class}">
@@ -195,9 +195,9 @@ with col_model2:
         <p style='color:#6c757d;'>Chelator-enhanced features with CatBoost regression</p>
     </div>
     """, unsafe_allow_html=True)
-    # 按钮辅助选择（兼容移动端）
+    # 按钮辅助选择
     if st.button("Select This Model", key="btn2"):
-        select_model("pred_model_catboost_feat-chelator")
+        select_model("pred_model_CatBoost_feat-chelator")
 
 # 显示当前选中的模型
 st.markdown(f"""
@@ -216,7 +216,7 @@ components = load_model(prefix)
 if components:
     model, num_imputer, scaler, te, selected_feats, num_cols, feature_names, cat_unique_vals = components
 
-    # 确定特征数量（匹配原始逻辑）
+    # 确定特征数量
     if prefix == "xgboost":
         n_cat = 6
         n_num = 6
@@ -227,7 +227,7 @@ if components:
     cat_cols = feature_names[:n_cat]
     num_cols_input = feature_names[n_cat: n_cat + n_num]
 
-    # ====================== 输入表单（优化样式） ======================
+    # ====================== 输入表单 ======================
     st.subheader("2. Input Parameters")
     input_dict = {}
 
@@ -276,7 +276,7 @@ if components:
             # 1. 构建输入DataFrame
             input_df = pd.DataFrame([input_dict])
 
-            # 2. 显示用户输入的原始数据（新增功能）
+            # 2. 显示用户输入的原始数据
             st.markdown("<h3 style='font-size:16px;'>User Input Data</h3>", unsafe_allow_html=True)
             # 美化输入数据展示
             input_display = input_df.copy()
@@ -301,7 +301,7 @@ if components:
             X_num_imputed = pd.DataFrame(num_imputer.transform(X_num), columns=X_num.columns)
             X_num_scaled = pd.DataFrame(scaler.transform(X_num_imputed), columns=X_num.columns)
 
-            # 特征交互（严格匹配原始逻辑）
+            # 特征交互
             current_num_cols = num_cols
             for i in range(len(current_num_cols)):
                 for j in range(i + 1, min(i + 3, len(current_num_cols))):
@@ -350,7 +350,7 @@ if components:
             """.format(prediction, st.session_state.selected_model, datetime.now().strftime("%Y-%m-%d %H:%M:%S")),
                         unsafe_allow_html=True)
 
-            # 6. 保存到历史记录（新增功能，最多10条）
+            # 6. 保存到历史记录
             history_entry = {
                 'timestamp': datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
                 'model': st.session_state.selected_model,
@@ -363,7 +363,7 @@ if components:
             if len(st.session_state.prediction_history) > 10:
                 st.session_state.prediction_history = st.session_state.prediction_history[:10]
 
-    # ====================== 最近10条历史记录（新增功能） ======================
+    # ====================== 最近10条历史记录======================
     st.markdown('<div class="divider"></div>', unsafe_allow_html=True)
     st.subheader("4. Recent Prediction History (Last 10)")
 
@@ -403,7 +403,7 @@ else:
     st.error("Failed to load model components. Please check model files.")
     st.stop()
 
-# 页脚（学术风格）
+# 页脚
 st.markdown("""
 <div style='margin-top:50px; padding-top:20px; border-top:1px solid #dee2e6; color:#6c757d; text-align:center;'>
     Radiopharmaceutical Biodistribution Prediction Platform | Designed for Academic Standards
