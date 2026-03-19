@@ -177,7 +177,7 @@ with col_model1:
     card_class = "model-card selected" if is_selected1 else "model-card"
     st.markdown(f"""
     <div class="{card_class}">
-        <h3>pred_model_xgboost_feat-basic</h3>
+        <h3>pred_model_XGBoost_feat-basic</h3>
         <p style='color:#6c757d;'>Basic feature set with XGBoost regression</p>
     </div>
     """, unsafe_allow_html=True)
@@ -191,7 +191,7 @@ with col_model2:
     card_class = "model-card selected" if is_selected2 else "model-card"
     st.markdown(f"""
     <div class="{card_class}">
-        <h3>pred_model_catboost_feat-chelator</h3>
+        <h3>pred_model_CatBoost_feat-chelator</h3>
         <p style='color:#6c757d;'>Chelator-enhanced features with CatBoost regression</p>
     </div>
     """, unsafe_allow_html=True)
